@@ -3,7 +3,9 @@ package org.vanya;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -11,10 +13,10 @@ import java.util.Map;
 @JsonPropertyOrder({
         "response"
 })
-public class LongPollServer {
+public class UserInfo {
 
     @JsonProperty("response")
-    private LongPollServerResponse response;
+    private List<UserInfoResponse> response = new ArrayList<UserInfoResponse>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -24,7 +26,7 @@ public class LongPollServer {
      * The response
      */
     @JsonProperty("response")
-    public LongPollServerResponse getResponse() {
+    public List<UserInfoResponse> getResponse() {
         return response;
     }
 
@@ -34,7 +36,7 @@ public class LongPollServer {
      * The response
      */
     @JsonProperty("response")
-    public void setResponse(LongPollServerResponse response) {
+    public void setResponse(List<UserInfoResponse> response) {
         this.response = response;
     }
 

@@ -13,7 +13,7 @@ import java.util.Map;
         "server",
         "ts"
 })
-public class Response {
+public class LongPollServerResponse {
 
     @JsonProperty("key")
     private String key;
