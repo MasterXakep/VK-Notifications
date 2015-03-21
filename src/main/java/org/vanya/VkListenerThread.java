@@ -60,7 +60,7 @@ public class VkListenerThread implements Runnable {
                         case (4):
                             userId = updatesList.get(3).toString();
                             int flag = (Integer)updatesList.get(2);
-                            if ((flag % 4) >= 2) {
+                            if (!((flag % 4) >= 2)) {
                                 url = new URL("https://api.vk.com/method/users.get?user_ids=" + userId);
                                 userInfo = mapper.readValue(url, UserInfo.class);
                                 firstName = userInfo.getResponse().get(0).getFirstName();
