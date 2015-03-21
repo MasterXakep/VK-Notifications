@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -35,20 +34,7 @@ public class ListenerTread implements Runnable {
 
             while (true) {
                 Updates updates = null;
-                try {
-                    updates = mapper.readValue(url, Updates.class);
-                } catch (IOException e) {
-
-                    //error 502
-                    url = new URL("https://api.vk.com/method/messages.getLongPollServer?use_ssl=0&need_pts=0&access_token=" + accessToken.getAccesToken());
-                    System.out.println(url);
-
-                    longPollServer = mapper.readValue(url, LongPollServer.class);
-
-                    url = new URL("http://" + longPollServer.getResponse().getServer() + "?act=a_check&key=" + longPollServer.getResponse().getKey() + "&ts=" + updates.getTs() + "&wait=25&mode=2");
-                    updates = mapper.readValue(url, Updates.class);
-                    e.printStackTrace();
-                }
+                updates = mapper.readValue(url, Updates.class);
                 //System.out.println(url);
                 updatesListList = updates.getUpdates();
                 String message = "";
@@ -73,14 +59,16 @@ public class ListenerTread implements Runnable {
                             break;
                         case (4):
                             userId = updatesList.get(3).toString();
-                            url = new URL("https://api.vk.com/method/users.get?user_ids=" + userId);
-                            userInfo = mapper.readValue(url, UserInfo.class);
-                            firstName = userInfo.getResponse().get(0).getFirstName();
-                            lastName = userInfo.getResponse().get(0).getLastName();
+                            if (!userId.toString().equals(accessToken.getUserId().toString())) {
+                                url = new URL("https://api.vk.com/method/users.get?user_ids=" + userId);
+                                userInfo = mapper.readValue(url, UserInfo.class);
+                                firstName = userInfo.getResponse().get(0).getFirstName();
+                                lastName = userInfo.getResponse().get(0).getLastName();
 
-                            String text = updatesList.get(6).toString();
-                            Notification notification = new Notification(firstName + " " + lastName, text);
-                            notification.send();
+                                String text = updatesList.get(6).toString();
+                                Notification notification = new Notification(firstName + " " + lastName, text);
+                                notification.send();
+                            }
                             message = "добавление нового сообщения";
                             break;
                         case (6):
@@ -115,6 +103,7 @@ public class ListenerTread implements Runnable {
                             firstName = userInfo.getResponse().get(0).getFirstName();
                             lastName = userInfo.getResponse().get(0).getLastName();
                             message = "пользователь " + firstName + " " + lastName + " начал набирать текст в диалоге. событие должно приходить раз в ~5 секунд при постоянном наборе текста. $flags = 1";
+                           // SystemTrayListener.changeIcon(1);
                             break;
                         case (62):
                             userId = updatesList.get(1).toString();
@@ -135,6 +124,8 @@ public class ListenerTread implements Runnable {
                         case (80):
                             int count = (Integer) updatesList.get(1);
                             message = "новый счетчик непрочитанных в левом меню стал равен " + count;
+                            if (count > 0) SystemTrayListener.changeIcon(2);
+                            else SystemTrayListener.changeIcon(3);
                             break;
                         default:
                             message = "nothing";

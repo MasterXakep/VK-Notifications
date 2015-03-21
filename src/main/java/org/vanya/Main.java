@@ -5,12 +5,19 @@ import java.io.IOException;
 /**
  * Created by vanya on 16.02.15.
  */
-public class Main {
+public class Main{
+
 
     public static void main(String[] args) throws InterruptedException, IOException {
+
         Runnable r = new ListenerTread();
-        Thread t = new Thread(r);
-        t.start();
+        Thread vkListener = new Thread(r);
+        vkListener.start();
+
+        SystemTrayListener r1 = new SystemTrayListener();
+        Thread tray = new Thread(r1);
+        tray.start();
+
 
     }
 }
