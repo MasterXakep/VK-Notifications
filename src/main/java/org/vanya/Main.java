@@ -10,11 +10,11 @@ public class Main{
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
-        Runnable r = new ListenerTread();
+        Runnable r = new VkListenerThread();
         Thread vkListener = new Thread(r);
         vkListener.start();
 
-        SystemTrayListener r1 = new SystemTrayListener();
+        SystemTrayThread r1 = new SystemTrayThread();
         Thread tray = new Thread(r1);
         tray.start();
 

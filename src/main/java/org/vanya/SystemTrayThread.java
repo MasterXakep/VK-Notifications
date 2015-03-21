@@ -9,17 +9,17 @@ import java.awt.event.MouseListener;
 /**
  * Created by vanya on 20.03.15.
  */
-public class SystemTrayListener implements Runnable {
+public class SystemTrayThread implements Runnable {
     static SystemTray tray;
     static Image image;
     static PopupMenu popup;
     static TrayIcon trayIcon;
 
-    public SystemTrayListener() {
+    public SystemTrayThread() {
         tray = SystemTray.getSystemTray();
         image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
         popup = new PopupMenu();
-        trayIcon = new TrayIcon(image, "Tray Demo", popup);
+        trayIcon = new TrayIcon(image, null, popup);
     }
 
     public static void changeIcon(int n) {
@@ -66,12 +66,10 @@ public class SystemTrayListener implements Runnable {
 
                 public void mousePressed(MouseEvent e) {
                     System.out.println("Tray Icon - Mouse pressed!");
-                    changeIcon(1);
                 }
 
                 public void mouseReleased(MouseEvent e) {
                     System.out.println("Tray Icon - Mouse released!");
-                    changeIcon(2);
                 }
             };
 
@@ -90,9 +88,9 @@ public class SystemTrayListener implements Runnable {
 
             ActionListener actionListener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    trayIcon.displayMessage("Action Event",
+/*                    trayIcon.displayMessage("Action Event",
                             "An Action Event Has Been Performed!",
-                            TrayIcon.MessageType.INFO);
+                            TrayIcon.MessageType.INFO);*/
                 }
             };
 

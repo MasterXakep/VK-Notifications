@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by vanya on 20.03.15.
  */
-public class ListenerTread implements Runnable {
+public class VkListenerThread implements Runnable {
     @Override
     public void run() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
@@ -59,7 +59,8 @@ public class ListenerTread implements Runnable {
                             break;
                         case (4):
                             userId = updatesList.get(3).toString();
-                            if (!userId.toString().equals(accessToken.getUserId().toString())) {
+                            int flag = (Integer)updatesList.get(2);
+                            if ((flag % 4) >= 2) {
                                 url = new URL("https://api.vk.com/method/users.get?user_ids=" + userId);
                                 userInfo = mapper.readValue(url, UserInfo.class);
                                 firstName = userInfo.getResponse().get(0).getFirstName();
@@ -124,8 +125,8 @@ public class ListenerTread implements Runnable {
                         case (80):
                             int count = (Integer) updatesList.get(1);
                             message = "новый счетчик непрочитанных в левом меню стал равен " + count;
-                            if (count > 0) SystemTrayListener.changeIcon(2);
-                            else SystemTrayListener.changeIcon(3);
+                            if (count > 0) SystemTrayThread.changeIcon(2);
+                            else SystemTrayThread.changeIcon(3);
                             break;
                         default:
                             message = "nothing";
