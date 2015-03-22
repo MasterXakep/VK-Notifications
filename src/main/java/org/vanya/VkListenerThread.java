@@ -1,16 +1,24 @@
 package org.vanya;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.net.URL;
 import java.util.List;
 
+
 /**
  * Created by vanya on 20.03.15.
  */
 public class VkListenerThread implements Runnable {
+    private static final Logger logger = Logger.getLogger(VkListenerThread.class);
+
+    public VkListenerThread() {
+
+    }
+
     @Override
     public void run() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
@@ -140,6 +148,9 @@ public class VkListenerThread implements Runnable {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.debug(e.getMessage());
+            Thread.currentThread().interrupt();
+            Thread.currentThread().start();
         }
     }
 }
