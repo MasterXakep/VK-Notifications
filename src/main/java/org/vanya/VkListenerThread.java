@@ -149,8 +149,6 @@ public class VkListenerThread implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug(e.getMessage());
-            Thread.currentThread().interrupt();
-            Thread.currentThread().start();
         }
     }
 }
