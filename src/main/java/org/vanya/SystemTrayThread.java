@@ -7,47 +7,27 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
- * Created by vanya on 20.03.15.
+ * Created by vanya on 16.02.15.
  */
-public class SystemTrayThread implements Runnable {
+public class SystemTrayThread{
+
     static SystemTray tray;
     static Image image;
     static PopupMenu popup;
     static TrayIcon trayIcon;
 
-    public SystemTrayThread() {
+    public static void main(String[] args){
+
+        Runnable r = new VkListenerThread();
+        Thread t = new Thread(r);
+        t.start();
+
         tray = SystemTray.getSystemTray();
         image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
         popup = new PopupMenu();
         trayIcon = new TrayIcon(image, null, popup);
-    }
 
-    public static void changeIcon(int n) {
-        System.out.println("change icon");
-        switch (n) {
-            case 1:
-                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/print1.png");
-                trayIcon.setImage(image);
-                break;
-            case 2:
-                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/incom.png");
-                trayIcon.setImage(image);
-                break;
-            case 3:
-                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
-                trayIcon.setImage(image);
-                break;
-            default:
-                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
-                trayIcon.setImage(image);
-        }
-    }
-
-    @Override
-    public void run() {
-
-
-        if (SystemTray.isSupported()) {
+           if (SystemTray.isSupported()) {
 
 
             MouseListener mouseListener = new MouseListener() {
@@ -110,4 +90,29 @@ public class SystemTrayThread implements Runnable {
 
         }
     }
+    public SystemTrayThread() {
+
+    }
+
+    public static void changeIcon(int n) {
+        System.out.println("change icon");
+        switch (n) {
+            case 1:
+                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/print.png");
+                trayIcon.setImage(image);
+                break;
+            case 2:
+                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/incom.png");
+                trayIcon.setImage(image);
+                break;
+            case 3:
+                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
+                trayIcon.setImage(image);
+                break;
+            default:
+                image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
+                trayIcon.setImage(image);
+        }
+    }
+
 }
