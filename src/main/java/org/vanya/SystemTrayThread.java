@@ -5,35 +5,63 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by vanya on 16.02.15.
  */
-public class SystemTrayThread{
+public class SystemTrayThread {
 
     static SystemTray tray;
     static Image image;
     static PopupMenu popup;
     static TrayIcon trayIcon;
+    final static Executor ex = Executors.newSingleThreadExecutor();
+    final static Runnable r = new VkListenerThread();
 
-    public static void main(String[] args){
+    public SystemTrayThread() {
 
-        Runnable r = new VkListenerThread();
-        Thread t = new Thread(r);
-        t.start();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+
+        // Thread t = new Thread(r);
+        // t.start();
+
+        ex.execute(r);
+
+/*        Runnable r1 = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (!VkListenerThread.isAlive()) {
+                        ex.execute(r);
+                    }
+                }
+            }
+        };
+
+        Thread restartThread = new Thread(r1);
+
+        restartThread.start();*/
+
 
         tray = SystemTray.getSystemTray();
         image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
         popup = new PopupMenu();
         trayIcon = new TrayIcon(image, null, popup);
 
-           if (SystemTray.isSupported()) {
+        if (SystemTray.isSupported()) {
 
 
             MouseListener mouseListener = new MouseListener() {
 
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("Tray Icon - Mouse clicked!");
+                    System.out.println();
+                    ex.execute(r);
                 }
 
                 public void mouseEntered(MouseEvent e) {
@@ -89,8 +117,6 @@ public class SystemTrayThread{
             System.out.println("System Tray is not supported");
 
         }
-    }
-    public SystemTrayThread() {
 
     }
 
@@ -113,6 +139,10 @@ public class SystemTrayThread{
                 image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
                 trayIcon.setImage(image);
         }
+    }
+
+    static void restartVkListener(){
+        ex.execute(r);
     }
 
 }

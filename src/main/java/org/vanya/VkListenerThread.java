@@ -14,9 +14,14 @@ import java.util.List;
  */
 public class VkListenerThread implements Runnable {
     private static final Logger logger = Logger.getLogger(VkListenerThread.class);
+    static boolean isAlive = true;
 
     public VkListenerThread() {
 
+    }
+
+    public static boolean isAlive() {
+        return isAlive;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class VkListenerThread implements Runnable {
                             break;
                         case (4):
                             userId = updatesList.get(3).toString();
-                            int flag = (Integer)updatesList.get(2);
+                            int flag = (Integer) updatesList.get(2);
                             if (!((flag % 4) >= 2)) {
                                 url = new URL("https://api.vk.com/method/users.get?user_ids=" + userId);
                                 userInfo = mapper.readValue(url, UserInfo.class);
@@ -112,7 +117,7 @@ public class VkListenerThread implements Runnable {
                             firstName = userInfo.getResponse().get(0).getFirstName();
                             lastName = userInfo.getResponse().get(0).getLastName();
                             message = "пользователь " + firstName + " " + lastName + " начал набирать текст в диалоге. событие должно приходить раз в ~5 секунд при постоянном наборе текста. $flags = 1";
-                           // SystemTrayListener.changeIcon(1);
+                            // SystemTrayListener.changeIcon(1);
                             break;
                         case (62):
                             userId = updatesList.get(1).toString();
@@ -141,12 +146,12 @@ public class VkListenerThread implements Runnable {
                     }
                     System.out.println(message);
                 }
-
                 System.out.println(updates.getUpdates().toString());
                 url = new URL("http://" + longPollServer.getResponse().getServer() + "?act=a_check&key=" + longPollServer.getResponse().getKey() + "&ts=" + updates.getTs() + "&wait=25&mode=2");
-
             }
         } catch (Exception e) {
+            isAlive = false;
+            SystemTrayThread.restartVkListener();
             e.printStackTrace();
             logger.debug(e.getMessage());
         }
