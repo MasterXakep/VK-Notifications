@@ -60,8 +60,7 @@ public class SystemTrayThread {
 
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("Tray Icon - Mouse clicked!");
-                    System.out.println();
-                    ex.execute(r);
+                    changeIcon(3);
                 }
 
                 public void mouseEntered(MouseEvent e) {

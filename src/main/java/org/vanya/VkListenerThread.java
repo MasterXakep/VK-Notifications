@@ -153,7 +153,7 @@ public class VkListenerThread implements Runnable {
             isAlive = false;
             SystemTrayThread.restartVkListener();
             e.printStackTrace();
-            logger.debug(e.getMessage());
+            logger.info(e.getMessage(), e);
         }
     }
 }
