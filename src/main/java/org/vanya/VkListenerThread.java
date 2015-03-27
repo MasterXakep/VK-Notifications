@@ -28,8 +28,10 @@ public class VkListenerThread implements Runnable {
     public void run() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
 
+        /**
+         * accessToken contain token and user id
+         */
         AccessConf accessToken = (AccessConf) context.getBean("accessTokenBean");
-        //getLongPollServer
 
         URL url = null;
         try {
@@ -147,6 +149,9 @@ public class VkListenerThread implements Runnable {
                     System.out.println(message);
                 }
                 System.out.println(updates.getUpdates().toString());
+                /**
+                 * set new ts parameter for longPollServer
+                 */
                 url = new URL("http://" + longPollServer.getResponse().getServer() + "?act=a_check&key=" + longPollServer.getResponse().getKey() + "&ts=" + updates.getTs() + "&wait=25&mode=2");
             }
         } catch (Exception e) {

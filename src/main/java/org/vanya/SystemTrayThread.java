@@ -26,27 +26,7 @@ public class SystemTrayThread {
 
     public static void main(String[] args) throws InterruptedException {
 
-
-        // Thread t = new Thread(r);
-        // t.start();
-
         ex.execute(r);
-
-/*        Runnable r1 = new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (!VkListenerThread.isAlive()) {
-                        ex.execute(r);
-                    }
-                }
-            }
-        };
-
-        Thread restartThread = new Thread(r1);
-
-        restartThread.start();*/
-
 
         tray = SystemTray.getSystemTray();
         image = Toolkit.getDefaultToolkit().getImage("src/main/resources/normal.png");
@@ -140,6 +120,9 @@ public class SystemTrayThread {
         }
     }
 
+    /**
+     * Restart vkListener thread if it's needed (502 error, time out, etc.)
+     */
     static void restartVkListener(){
         ex.execute(r);
     }
