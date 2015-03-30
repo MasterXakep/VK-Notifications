@@ -8,8 +8,8 @@
 
 
     <!-- Configure bean to convert JSON to POJO and vice versa -->
-    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-    </bean>
+   <!-- <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    </bean>-->
 
     <bean
             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
